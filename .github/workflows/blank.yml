@@ -34,3 +34,27 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Add other steps for deployment here
+
+    post:
+      always:
+        - name: Add Build Badge
+          run: echo "BuildBadge = addEmbeddableBadgeConfiguration(id: 'BuildBadge', subject: 'Build')"
+
+      failure:
+        - name: Notify on failure
+          run: echo "Notify on failure"  
+
+      unstable:
+        # Add steps to run on unstable here
+        - name: Notify on unstable
+          run: echo "Notify on unstable"
