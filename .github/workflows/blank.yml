@@ -48,7 +48,7 @@ jobs:
     post:
       always:
         - name: Add Build Badge
-          run: echo "BuildBadge = addEmbeddableBadgeConfiguration(id: 'BuildBadge', subject: 'Build')"
+          run: echo "Build badge"
 
       failure:
         - name: Notify on failure
