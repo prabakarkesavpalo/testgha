@@ -43,18 +43,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Add other steps for deployment here
+      - name: Add Build Badge
+        if: always()
+        run: echo "Build badge"
 
-    post:
-      always:
-        - name: Add Build Badge
-          run: echo "Build badge"
+      # Notify on failure
+      - name: Notify on failure
+        if: failure()
+        run: echo "Notify on failure"
 
-      failure:
-        - name: Notify on failure
-          run: echo "Notify on failure"  
+  # Assuming "unstable" refers to a job that does not fail but doesn't fully succeed either,
+  # GitHub Actions does not have a direct "unstable" status, but you can use custom logic or
+  # job outputs to determine such a state and conditionally run steps.
 
-      unstable:
-        # Add steps to run on unstable here
-        - name: Notify on unstable
-          run: echo "Notify on unstable"
+
+  
+    # post:
+    #   always:
+    #     - name: Add Build Badge
+    #       run: echo "Build badge"
+
+    #   failure:
+    #     - name: Notify on failure
+    #       run: echo "Notify on failure"  
+
+    #   unstable:
+    #     # Add steps to run on unstable here
+    #     - name: Notify on unstable
+    #       run: echo "Notify on unstable"
+

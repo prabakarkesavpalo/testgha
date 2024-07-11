@@ -1,0 +1,39 @@
+pipeline {
+    parameters {
+        // parameters definition here
+    }
+    agent {
+        label 'agent'
+    }
+    stages {
+        stage('prepare') {
+            // steps for prepare stage here
+        }
+        stage('docker push') {
+            when {
+                beforeAgent true
+                anyOf {
+                equals expected: 'aicoe_uat', actual: DEPLOY_ENV
+                equals expected: 'uat', actual: DEPLOY_ENV
+                equals expected: 'pva_uat', actual: DEPLOY_ENV
+                }
+            }
+        }
+        stage('deploy') {
+            // steps for deployment stage here
+        }
+    }
+    post {
+        always {
+            script {
+                BuildBadge = addEmbeddableBadgeConfiguration(id: 'BuildBadge', subject: 'Build')
+            }
+        }
+        failure {
+            // steps for failure condition here
+        }
+        unstable {
+            // steps for unstable condition here
+        }
+    }
+}
