@@ -49,8 +49,7 @@ jobs:
           # Create or update environment
           gh api \
             -X PUT \
-            repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME \
-            -f wait_timer=0
+            repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME 
 
           echo "Environment $ENVIRONMENT_NAME created"
           # Clear existing protection rules
