@@ -32,8 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Set up GitHub CLI
-        uses: github/gh-cli@v2
+      # - name: Set up GitHub CLI
+      #   uses: github/gh-cli@v2
 
       - name: Authenticate GitHub CLI
         run: |
