@@ -60,8 +60,7 @@ jobs:
         run: |
           chmod +x ./convert_yaml_to_env.sh
           ./convert_yaml_to_env.sh 
-          # Print all exported variables
-          env | grep '^YAML_'
+          env | grep 'YAML_'
 
           
 
