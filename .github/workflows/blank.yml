@@ -37,34 +37,35 @@ jobs:
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ secrets.SECRET_TOKEN }}" | gh auth login --with-token
+         echo "Hello"
+      #     echo "${{ secrets.SECRET_TOKEN }}" | gh auth login --with-token
 
-      - name: Create environment and Set up environment protection rules
-        run: |
-          REPO_OWNER="prabakarkesavpalo"
-          REPO_NAME="testgha"
-          ENVIRONMENT_NAME="production"
-          APPROVERS="prabakarkesavpalo"
+      # - name: Create environment and Set up environment protection rules
+      #   run: |
+      #     REPO_OWNER="prabakarkesavpalo"
+      #     REPO_NAME="testgha"
+      #     ENVIRONMENT_NAME="production"
+      #     APPROVERS="prabakarkesavpalo"
 
-          # Create or update environment
-          gh api \
-            -X PUT \
-            repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME 
+      #     # Create or update environment
+      #     gh api \
+      #       -X PUT \
+      #       repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME 
 
-          echo "Environment $ENVIRONMENT_NAME created"
-          # Clear existing protection rules
-          gh api \
-            -X DELETE \
-            repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME/protection_rules
+      #     echo "Environment $ENVIRONMENT_NAME created"
+      #     # Clear existing protection rules
+      #     gh api \
+      #       -X DELETE \
+      #       repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME/protection_rules
 
-          # Add protection rules with approvers
-          for APPROVER in $APPROVERS; do
-            gh api \
-              -X POST \
-              repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME/protection_rules \
-              -f reviewers='[{"type":"User","username":"'$APPROVER'"}]'
-          done
-          echo "Approvers $APPROVERS added to environment $ENVIRONMENT_NAME"
+      #     # Add protection rules with approvers
+      #     for APPROVER in $APPROVERS; do
+      #       gh api \
+      #         -X POST \
+      #         repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME/protection_rules \
+      #         -f reviewers='[{"type":"User","username":"'$APPROVER'"}]'
+      #     done
+      #     echo "Approvers $APPROVERS added to environment $ENVIRONMENT_NAME"
 
 
   deploy:
@@ -77,7 +78,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Add Build Badge
-        if: always()
-        run: echo "Build badge"
+      - uses: actions-tools/yaml-outputs@v2
+        id: yaml
+        with:
+          file-path: '.github/test-file.yaml'
+      - run: |
+          echo "${{ steps.yaml.outputs.root__parent__child_1 }}"
+          echo "${{ steps.yaml.outputs.root__parent__child_2 }}"
+          echo "${{ env.root__parent__child_1 }}"
+          echo "${{ env.root__parent__child_2 }}"

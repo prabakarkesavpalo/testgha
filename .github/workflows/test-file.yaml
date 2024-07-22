@@ -1,0 +1,12 @@
+
+root:
+  parent:
+    child_1: 'my_string_111'
+    child_2: 112
+# approval:
+#     tasks:
+#      - name: gate
+#        args:
+#         env: uat
+#         approver:
+#             - prabakarkesavpalo
