@@ -60,9 +60,6 @@ jobs:
         run: |
           chmod +x ./convert_yaml_to_env.sh
           ./convert_yaml_to_env.sh
-  
-      - name: Use environment variables
-        run: |
           echo "DATABASE_PATH=${{ env.YAML_DATABASE_PATH }}"
           echo "DATABASE_NAME=${{ env.YAML_DATABASE_NAME }}"
           echo "DATABASE_DUMP=${{ env.YAML_DATABASE_DUMP }}"
