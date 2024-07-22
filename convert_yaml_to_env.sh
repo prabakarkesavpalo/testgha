@@ -37,4 +37,4 @@ yaml_content=$(cat config.yaml)
 process_yaml "YAML_" "$yaml_content"
 
 # Print all exported variables
-env | grep '^YAML_'
+tmp=$(env | grep '^YAML_') >> $GITHUB_ENV
