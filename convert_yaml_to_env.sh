@@ -35,3 +35,6 @@ yaml_content=$(cat config.yaml)
 
 # Process YAML content
 process_yaml "YAML_" "$yaml_content"
+
+# Print all exported variables
+env | grep '^YAML_'
