@@ -59,12 +59,7 @@ jobs:
       - name: Run YAML to Env script
         run: |
           chmod +x ./convert_yaml_to_env.sh
-          ./convert_yaml_to_env.sh 
-          env | grep 'YAML_'
-
-          
-
-  
+          ./convert_yaml_to_env.sh
       # - uses: actions-tools/yaml-outputs@v2
       #   id: yaml
       #   with:
