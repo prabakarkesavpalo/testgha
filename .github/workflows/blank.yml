@@ -60,13 +60,8 @@ jobs:
         run: |
           chmod +x ./convert_yaml_to_env.sh
           ./convert_yaml_to_env.sh 
-          echo $YAML_DATABASE_PATH
-          echo $YAML_DATABASE_NAME
-          echo $YAML_DATABASE_DUMP
-          echo $YAML_MOUNT_POINT
-          echo $YAML_MOUNT_PATH
-          echo $YAML_USERS_LIST
-          echo $YAML_SETTINGS_FLAGS_LIST
+          # Print all exported variables
+          env | grep '^YAML_'
 
           
 
