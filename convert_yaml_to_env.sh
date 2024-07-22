@@ -12,16 +12,17 @@ process_yaml() {
             value="${BASH_REMATCH[2]}"
             # Remove quotes from the value
             value="${value//\"/}"
-            # Export the variable
-            export "${prefix}${key}"="$value"
+            # Convert key to uppercase and export the variable
+            upper_key="${prefix}${key^^}"  # Convert to uppercase
+            export "$upper_key"="$value"
             # For lists, also export a pipe-separated list
             if [[ $key =~ _[0-9]+$ ]]; then
                 base_key="${key%_*}"
-                list_var="${prefix}${base_key}_LIST"
+                list_var="${prefix}${base_key^^}_LIST"  # Convert to uppercase
                 if [[ -z "${!list_var}" ]]; then
-                    export "${list_var}=$value"
+                    export "$list_var=$value"
                 else
-                    export "${list_var}=${!list_var}|$value"
+                    export "$list_var=${!list_var}|$value"
                 fi
             fi
         fi
