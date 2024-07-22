@@ -60,15 +60,14 @@ jobs:
         run: |
           chmod +x ./convert_yaml_to_env.sh
           ./convert_yaml_to_env.sh 
-          env >> $GITHUB_ENV
-          echo "DATABASE_PATH=$YAML_DATABASE_PATH"
-          echo "DATABASE_NAME=$YAML_DATABASE_NAME"
-          echo "DATABASE_DUMP=$YAML_DATABASE_DUMP"
-          echo "MOUNT_POINT=$YAML_MOUNT_POINT"
-          echo "MOUNT_PATH=$YAML_MOUNT_PATH"
-          echo "USERS=$YAML_USERS_LIST"
-          echo "SETTINGS_FLAGS=$YAML_SETTINGS_FLAGS_LIST"
-          echo $GITHUB_ENV
+          echo $YAML_DATABASE_PATH
+          echo $YAML_DATABASE_NAME
+          echo $YAML_DATABASE_DUMP
+          echo $YAML_MOUNT_POINT
+          echo $YAML_MOUNT_PATH
+          echo $YAML_USERS_LIST
+          echo $YAML_SETTINGS_FLAGS_LIST
+
           
 
   
