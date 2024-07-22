@@ -5,11 +5,7 @@ process_yaml() {
     local prefix=$1
     local yaml=$2
 
-    # Process scalar values
-    eval $(echo "$yaml" | yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | 
-        (path | join("_")) + "=" + @sh' -)
-
-    # Process lists
+    # Process scalar values and lists
     while IFS= read -r line; do
         if [[ $line =~ ^([^=]+)=(.*)$ ]]; then
             key="${BASH_REMATCH[1]}"
@@ -18,13 +14,15 @@ process_yaml() {
             value="${value//\"/}"
             # Export the variable
             export "${prefix}${key}"="$value"
-            # For lists, also export each item with an index
+            # For lists, also export a pipe-separated list
             if [[ $key =~ _[0-9]+$ ]]; then
                 base_key="${key%_*}"
-                if [[ ! -v "${prefix}${base_key}" ]]; then
-                    export "${prefix}${base_key}="
+                list_var="${prefix}${base_key}_LIST"
+                if [[ -z "${!list_var}" ]]; then
+                    export "${list_var}=$value"
+                else
+                    export "${list_var}=${!list_var}|$value"
                 fi
-                export "${prefix}${base_key}=${!prefix${base_key}}${!prefix${base_key}:+|}$value"
             fi
         fi
     done < <(echo "$yaml" | yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | 
