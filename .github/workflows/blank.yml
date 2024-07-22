@@ -60,12 +60,3 @@ jobs:
         run: |
           chmod +x ./convert_yaml_to_env.sh
           ./convert_yaml_to_env.sh
-      # - uses: actions-tools/yaml-outputs@v2
-      #   id: yaml
-      #   with:
-      #     file-path: '.github/test-file.yaml'
-      # - run: |
-      #     echo "${{ steps.yaml.outputs.root__parent__child_1 }}"
-      #     echo "${{ steps.yaml.outputs.root__parent__child_2 }}"
-      #     echo "${{ env.root__parent__child_1 }}"
-      #     echo "${{ env.root__parent__child_2 }}"
