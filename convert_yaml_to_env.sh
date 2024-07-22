@@ -28,7 +28,7 @@ process_yaml() {
             fi
         fi
     done < <(echo "$yaml" | yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | 
-        (path | join("_")) + "=" + .' - | sed 's/^/YAML_/')
+        (path | join("_")) + "=" + .' -)
 }
 
 # Read YAML file
