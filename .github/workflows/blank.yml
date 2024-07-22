@@ -38,34 +38,6 @@ jobs:
       - name: Authenticate GitHub CLI
         run: |
          echo "Hello"
-      #     echo "${{ secrets.SECRET_TOKEN }}" | gh auth login --with-token
-
-      # - name: Create environment and Set up environment protection rules
-      #   run: |
-      #     REPO_OWNER="prabakarkesavpalo"
-      #     REPO_NAME="testgha"
-      #     ENVIRONMENT_NAME="production"
-      #     APPROVERS="prabakarkesavpalo"
-
-      #     # Create or update environment
-      #     gh api \
-      #       -X PUT \
-      #       repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME 
-
-      #     echo "Environment $ENVIRONMENT_NAME created"
-      #     # Clear existing protection rules
-      #     gh api \
-      #       -X DELETE \
-      #       repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME/protection_rules
-
-      #     # Add protection rules with approvers
-      #     for APPROVER in $APPROVERS; do
-      #       gh api \
-      #         -X POST \
-      #         repos/$REPO_OWNER/$REPO_NAME/environments/$ENVIRONMENT_NAME/protection_rules \
-      #         -f reviewers='[{"type":"User","username":"'$APPROVER'"}]'
-      #     done
-      #     echo "Approvers $APPROVERS added to environment $ENVIRONMENT_NAME"
 
 
   deploy:
