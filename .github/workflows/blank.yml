@@ -60,3 +60,7 @@ jobs:
         run: |
           chmod +x ./convert_yaml_to_env.sh
           ./convert_yaml_to_env.sh
+
+      - name: Run a multi-line script
+        run: |
+          env
