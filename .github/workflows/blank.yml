@@ -59,7 +59,8 @@ jobs:
       - name: Run YAML to Env script
         run: |
           chmod +x ./convert_yaml_to_env.sh
-          ./convert_yaml_to_env.sh >> $GITHUB_ENV
+          ./convert_yaml_to_env.sh 
+          env >> $GITHUB_ENV
           echo "DATABASE_PATH=${YAML_DATABASE_PATH}"
           echo "DATABASE_NAME=${YAML_DATABASE_NAME}"
           echo "DATABASE_DUMP=${YAML_DATABASE_DUMP}"
