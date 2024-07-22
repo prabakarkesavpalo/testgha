@@ -1,9 +1,19 @@
 
-root:
-  parent:
-    child_1: 'my_string_111'
-    child_2: 112
-# approval:
+database:
+  path: "/some/path/databases"
+  name: "database.sqlite"
+  dump: "structure_dump.sql"
+mount:
+  point: "/mnt/nas"
+  path: "my/path/to/data"
+users:
+  - alice
+  - bob
+  - charlie
+settings:
+  flags:
+    - debug
+    - verbose
 #     tasks:
 #      - name: gate
 #        args:

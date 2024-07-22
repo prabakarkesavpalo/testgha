@@ -46,17 +46,40 @@ jobs:
     needs: approval
     environment: 
       name: production
-      url: ${{ steps.deploy.outputs.url }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - uses: actions-tools/yaml-outputs@v2
-        id: yaml
-        with:
-          file-path: '.github/test-file.yaml'
-      - run: |
-          echo "${{ steps.yaml.outputs.root__parent__child_1 }}"
-          echo "${{ steps.yaml.outputs.root__parent__child_2 }}"
-          echo "${{ env.root__parent__child_1 }}"
-          echo "${{ env.root__parent__child_2 }}"
+        
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+  
+      - name: Run YAML to Env script
+        run: |
+          chmod +x ./convert_yaml_to_env.sh
+          ./convert_yaml_to_env.sh
+  
+      - name: Use environment variables
+        run: |
+          echo "DATABASE_PATH=${{ env.YAML_DATABASE_PATH }}"
+          echo "DATABASE_NAME=${{ env.YAML_DATABASE_NAME }}"
+          echo "DATABASE_DUMP=${{ env.YAML_DATABASE_DUMP }}"
+          echo "MOUNT_POINT=${{ env.YAML_MOUNT_POINT }}"
+          echo "MOUNT_PATH=${{ env.YAML_MOUNT_PATH }}"
+          echo "USERS=${{ env.YAML_USERS }}"
+          echo "SETTINGS_FLAGS=${{ env.YAML_SETTINGS_FLAGS }}"
+          
+
+
+  
+      # - uses: actions-tools/yaml-outputs@v2
+      #   id: yaml
+      #   with:
+      #     file-path: '.github/test-file.yaml'
+      # - run: |
+      #     echo "${{ steps.yaml.outputs.root__parent__child_1 }}"
+      #     echo "${{ steps.yaml.outputs.root__parent__child_2 }}"
+      #     echo "${{ env.root__parent__child_1 }}"
+      #     echo "${{ env.root__parent__child_2 }}"
