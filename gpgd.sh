@@ -19,15 +19,18 @@ decrypt() {
     local homedir="$2"
     # Construct output filename by removing .gpg extension
     output="${file%.gpg}"
+    echo $output
+    echo $file
+    echo $homedir
 
-    # Decrypt the file
-    gpg --homedir="$homedir" -o "$output" -d "$file"
+    # # Decrypt the file
+    # gpg --homedir="$homedir" -o "$output" -d "$file"
 
-    if [ $? -eq 0 ]; then
-        echo "Decrypted: $file to $output"
-    else
-        echo "Failed to decrypt: $file"
-    fi
+    # if [ $? -eq 0 ]; then
+    #     echo "Decrypted: $file to $output"
+    # else
+    #     echo "Failed to decrypt: $file"
+    # fi
 }
 
 if [ "$DECRYPT_AUTO"=false ]; then
@@ -40,6 +43,7 @@ if [ "$DECRYPT_AUTO"=false ]; then
     fi
     # Assign a input as file to make it consistent with the loop
     file = $INPUT_FILE
+
     # Call the decrypt function
     decrypt "$file" "$HOME_DIR"
 
