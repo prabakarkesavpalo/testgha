@@ -13,7 +13,7 @@ SEARCH_DIR="."
 #TOKEN=$(cat "$TOKEN_FILE")
 
 # Extension of the decrypted files
-=".txt"
+INPUT_EXT=".txt"
 
 # Find .gpg files and loop through them
 find "$SEARCH_DIR" -type f -name "*.txt.gpg" | while read -r file; do
@@ -21,22 +21,14 @@ find "$SEARCH_DIR" -type f -name "*.txt.gpg" | while read -r file; do
     output="${file%.gpg}"
     
     # Decrypt the file using the token
-    decryption_output=$(gpg --homedir=".gnupg" -o "$output" -d "$file" 2>&1)
+    gpg --homedir=".gnupg" -o "$output" -d "$file"
     echo "$decryption_output"
     echo "Opening $output"
     
-    # Directly check if "failed" keyword is present in the decryption output
-    echo "$decryption_output" | grep -iq "failed"
+    # Check if encryption was successful
     if [ $? -eq 0 ]; then
-        echo "Error: Decryption failed for $file"
-        exit 1
-    fi
-
-    # Check if GPG command itself failed
-    if [ ${PIPESTATUS[0]} -ne 0 ]; then
-        echo "Error: GPG command failed for $file"
-        exit 1
+        echo "Encrypted: $file to $output"
     else
-        echo "Decrypted: $file"
+        echo "Failed to encrypt: $file"
     fi
 done
