@@ -42,7 +42,7 @@ if [ "$DECRYPT_AUTO"=false ]; then
         exit 1
     fi
     # Assign a input as file to make it consistent with the loop
-    file = "$INPUT_FILE"
+    file="$INPUT_FILE"
 
     # Call the decrypt function
     decrypt "$file" "$HOME_DIR"
