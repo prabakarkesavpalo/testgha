@@ -51,16 +51,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Install yq
-        run: |
-          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
-          sudo chmod +x /usr/local/bin/yq
+      # - name: Install yq
+      #   run: |
+      #     sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+      #     sudo chmod +x /usr/local/bin/yq
   
-      - name: Run YAML to Env script
+      - name: Run gpg decypt
         run: |
-          chmod +x ./convert_yaml_to_env.sh
-          ./convert_yaml_to_env.sh
+          chmod +x ./gpgd.sh
+          ./gpgd.sh
+          cat hello.txt
 
-      - name: Run a multi-line script
-        run: |
-           echo $tmp
+      # - name: Run a multi-line script
+      #   run: |
+      #      echo $tmp
