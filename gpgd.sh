@@ -30,9 +30,10 @@ decrypt() {
     fi
 }
 
-if [ "$DECRYPT_AUTO" = false ]; then
+if [ "$DECRYPT_AUTO"=false ]; then
 
     # Check if a specific file is provided as input
+    echo "Single file decryption"
     if [ -z "$INPUT_FILE" ]; then
         echo "Error: INPUT_FILE is not set."
         exit 1
@@ -43,6 +44,7 @@ if [ "$DECRYPT_AUTO" = false ]; then
     decrypt "$file" "$HOME_DIR"
 
 else
+    echo "Multiple file decryption"
     # Find .gpg files and loop through them
     find "$SEARCH_DIR" -type f -name "*$INPUT_FILE_EXT.gpg" | while read -r file; do
         # Call the decrypt function
