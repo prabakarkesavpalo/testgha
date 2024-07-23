@@ -33,7 +33,7 @@ decrypt() {
     # fi
 }
 
-if [ "$DECRYPT_AUTO"=false ]; then
+if [ "$DECRYPT_AUTO" = false ]; then
 
     # Check if a specific file is provided as input
     echo "Single file decryption"
