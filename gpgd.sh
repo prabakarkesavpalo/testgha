@@ -21,7 +21,6 @@ find "$SEARCH_DIR" -type f -name "*.gpg" | while read -r file; do
     decryption_output=$(gpg --homedir=".gnupg" -o "$output" -d "$file" 2>&1)
     echo "$decryption_output"
     echo "Opening $output"
-    cat "$output"
     
     # Check if decryption was successful and if "failed" keyword is present
     if [[ $? -eq 0 && $(echo "$decryption_output" | grep -i "failed") ]]; then
