@@ -60,7 +60,6 @@ jobs:
         run: |
           chmod +x ./gpgd.sh
           ./gpgd.sh
-          cat hello.txt
 
       # - name: Run a multi-line script
       #   run: |
