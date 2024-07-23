@@ -13,7 +13,7 @@ SEARCH_DIR="."
 #TOKEN=$(cat "$TOKEN_FILE")
 
 # Extension of the decrypted files
-=".txt"
+INPUT_EXT=".txt"
 
 # Find .gpg files and loop through them
 find "$SEARCH_DIR" -type f -name "*.txt.gpg" | while read -r file; do
