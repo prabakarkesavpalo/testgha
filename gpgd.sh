@@ -11,7 +11,7 @@ INPUT_FILE_EXT=".txt"
 HOME_DIR=".gnupg"
 
 INPUT_FILE="hello.txt.gpg"
-DECRYPT_AUTO=false
+DECRYPT_AUTO=true
 
 # Function to decrypt a file
 decrypt() {
