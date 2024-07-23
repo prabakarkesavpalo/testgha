@@ -18,14 +18,19 @@ find "$SEARCH_DIR" -type f -name "*.gpg" | while read -r file; do
     output="${file%.gpg}"
     
     # Decrypt the file using the token
-    gpg --homedir=".gnupg" -o "$output" -d "$file"
-    #echo "$TOKEN" | gpg --batch --yes --passphrase-fd 0 --output "$output" --decrypt "$file"
+    decryption_output=$(gpg --homedir=".gnupg" -o "$output" -d "$file" 2>&1)
+    echo "$decryption_output"
     echo "Opening $output"
-    cat $output
-    # Check if decryption was successful
-    if [ $? -eq 0 ]; then
-        echo "Decrypted: $file"
+    cat "$output"
+    
+    # Check if decryption was successful and if "failed" keyword is present
+    if [[ $? -eq 0 && $(echo "$decryption_output" | grep -i "failed") ]]; then
+        echo "Error: Decryption failed for $file"
+        exit 1
+    elif [ $? -ne 0 ]; then
+        echo "Error: GPG command failed for $file"
+        exit 1
     else
-        echo "Failed to decrypt: $file"
+        echo "Decrypted: $file"
     fi
 done
