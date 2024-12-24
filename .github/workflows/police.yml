@@ -59,7 +59,14 @@ jobs:
   deploy-uat:
     needs: e2e-test-sit
     runs-on: ubuntu-latest
-    environment: UAT
+    environment:
+      name: UAT
+      # Optional: Add URL if you want to link to your deployment
+      # url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
+      - uses: actions/checkout@v4
+      
       - name: Deploy to UAT
-        run: echo "Deploying to UAT environment"
+        run: |
+          echo "Deploying to UAT environment"
+          # Add your UAT deployment steps here
