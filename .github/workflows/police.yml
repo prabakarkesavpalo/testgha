@@ -1,15 +1,14 @@
-name: Main Workflow
+name: Main Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  call-reusable-workflow:
+  pipeline:
     uses: ./.github/workflows/reusable.yml
     with:
-      sast_analysis_message: "Running SAST analysis"
-      build_message: "Building application image"
-      deploy_sit_message: "Deploying to SIT environment"
-      deploy_uat_message: "Deploying to UAT environment"
+      environment: 'UAT'
+      skip_sit: true

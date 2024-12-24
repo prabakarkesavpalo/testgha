@@ -1,52 +1,73 @@
-name: Reusable Workflow
+name: Reusable Pipeline
 
 on:
   workflow_call:
     inputs:
-      sast_analysis_message:
-        description: 'Message for SAST analysis'
+      environment:
         required: true
         type: string
-      build_message:
-        description: 'Message for building Docker image'
-        required: true
-        type: string
-      deploy_sit_message:
-        description: 'Message for deploying to SIT'
-        required: true
-        type: string
-      deploy_uat_message:
-        description: 'Message for deploying to UAT'
-        required: true
-        type: string
+      skip_sit:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
-  build-sca-sast:
+  preparation:
     runs-on: ubuntu-latest
     steps:
-      - name: Run SAST Analysis
-        run: echo "${{ inputs.sast_analysis_message }}"
+      - uses: actions/checkout@v4
+      - name: Preparation Setup
+        run: echo "Running preparation steps"
+
+  parallel-stages:
+    needs: preparation
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: ['build', 'unit-test', 'packaging', 'sca']
+    steps:
+      - uses: actions/checkout@v4
+      - name: ${{ matrix.job }}
+        run: echo "Running ${{ matrix.job }}"
+
+  sast:
+    needs: parallel-stages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: SAST Analysis
+        run: echo "Running SAST analysis"
 
   image-build:
-    needs: build-sca-sast
+    needs: sast
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Build Docker Image
-        run: echo "${{ inputs.build_message }}"
+        run: echo "Building application image"
 
   deploy-sit:
     needs: image-build
     runs-on: ubuntu-latest
-    if: false  # This stage will be skipped but visible
+    if: inputs.skip_sit == false
     steps:
       - name: Deploy to SIT
-        run: echo "${{ inputs.deploy_sit_message }}"
+        run: echo "Deploying to SIT environment"
+
+  e2e-test-sit:
+    needs: deploy-sit
+    runs-on: ubuntu-latest
+    if: inputs.skip_sit == false
+    steps:
+      - name: E2E Tests
+        run: echo "Running E2E tests in SIT"
 
   deploy-uat:
-    needs: image-build  # Changed dependency to image-build to skip SIT stages
+    needs: [image-build, e2e-test-sit]
+    if: always() && (needs.e2e-test-sit.result == 'success' || needs.e2e-test-sit.result == 'skipped')
     runs-on: ubuntu-latest
-    environment: UAT
+    environment:
+      name: ${{ inputs.environment }}
     steps:
       - name: Deploy to UAT
-        run: echo "${{ inputs.deploy_uat_message }}"
+        run: echo "Deploying to UAT environment"
