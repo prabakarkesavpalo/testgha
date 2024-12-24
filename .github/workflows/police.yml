@@ -1,67 +1,15 @@
-name: CI/CD Pipeline
+name: Main Workflow
 
 on:
   push:
-    branches: [ main ]
-  # pull_request:
-  #   branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  preparation:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Preparation Setup
-        run: echo "Running preparation steps"
-
-  parallel-jobs:
-    needs: preparation
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        job: ['build', 'unit-test', 'packaging', 'sca']
-    steps:
-      - uses: actions/checkout@v4
-      - name: ${{ matrix.job }}
-        run: echo "Running ${{ matrix.job }}"
-
-  build-sca-sast:
-    needs: parallel-jobs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: SAST Analysis
-        run: echo "Running SAST analysis"
-
-  image-build:
-    needs: build-sca-sast
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Docker Image
-        run: echo "Building application image"
-
-  deploy-sit:
-    needs: image-build
-    runs-on: ubuntu-latest
-    if: false  # This stage will be skipped but visible
-    steps:
-      - name: Deploy to SIT
-        run: echo "Deploying to SIT environment"
-
-  deploy-uat:
-    needs: image-build  # Changed dependency to image-build to skip SIT stages
-    runs-on: ubuntu-latest
-    environment: UAT
-    steps:
-      - name: Deploy to UAT
-        run: echo "Deploying to UAT environment"
-
-  deploy-prod:
-    needs: deploy-uat
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Deploy to Production
-        run: echo "Deploying to Production environment"
-      
+  call-reusable-workflow:
+    uses: ./.github/workflows/reusable.yml
+    with:
+      sast_analysis_message: "Running SAST analysis"
+      build_message: "Building application image"
+      deploy_sit_message: "Deploying to SIT environment"
+      deploy_uat_message: "Deploying to UAT environment"

@@ -1,0 +1,52 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      sast_analysis_message:
+        description: 'Message for SAST analysis'
+        required: true
+        type: string
+      build_message:
+        description: 'Message for building Docker image'
+        required: true
+        type: string
+      deploy_sit_message:
+        description: 'Message for deploying to SIT'
+        required: true
+        type: string
+      deploy_uat_message:
+        description: 'Message for deploying to UAT'
+        required: true
+        type: string
+
+jobs:
+  build-sca-sast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run SAST Analysis
+        run: echo "${{ inputs.sast_analysis_message }}"
+
+  image-build:
+    needs: build-sca-sast
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: echo "${{ inputs.build_message }}"
+
+  deploy-sit:
+    needs: image-build
+    runs-on: ubuntu-latest
+    if: false  # This stage will be skipped but visible
+    steps:
+      - name: Deploy to SIT
+        run: echo "${{ inputs.deploy_sit_message }}"
+
+  deploy-uat:
+    needs: image-build  # Changed dependency to image-build to skip SIT stages
+    runs-on: ubuntu-latest
+    environment: UAT
+    steps:
+      - name: Deploy to UAT
+        run: echo "${{ inputs.deploy_uat_message }}"
