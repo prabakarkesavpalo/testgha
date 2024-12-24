@@ -49,14 +49,6 @@ jobs:
       - name: Deploy to SIT
         run: echo "Deploying to SIT environment"
 
-  e2e-test-sit:
-    needs: deploy-sit
-    runs-on: ubuntu-latest
-    if: false  # This stage will be skipped but visible
-    steps:
-      - name: Run E2E Tests
-        run: echo "Running E2E tests in SIT"
-
   deploy-uat:
     needs: image-build  # Changed dependency to image-build to skip SIT stages
     runs-on: ubuntu-latest
