@@ -12,3 +12,12 @@ jobs:
     with:
       environment: 'UAT'
       skip_sit: true
+      prep_message: "Running preparation in main pipeline"
+      build_message: "Running build from main pipeline"
+      test_message: "Running tests from main pipeline"
+      package_message: "Running packaging from main pipeline"
+      sca_message: "Running SCA from main pipeline"
+      sast_message: "Running SAST from main pipeline"
+      image_message: "Building image from main pipeline"
+      uat_message: "Deploying to UAT from main pipeline"
+      prod_message: "Deploying to Production from main pipeline"

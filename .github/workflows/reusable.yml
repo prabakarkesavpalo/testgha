@@ -10,6 +10,42 @@ on:
         required: false
         type: boolean
         default: false
+      prep_message:
+        required: false
+        type: string
+        default: "Running preparation"
+      build_message:
+        required: false
+        type: string
+        default: "Running build"
+      test_message:
+        required: false
+        type: string
+        default: "Running tests"
+      package_message:
+        required: false
+        type: string
+        default: "Running packaging"
+      sca_message:
+        required: false
+        type: string
+        default: "Running SCA"
+      sast_message:
+        required: false
+        type: string
+        default: "Running SAST"
+      image_message:
+        required: false
+        type: string
+        default: "Building image"
+      uat_message:
+        required: false
+        type: string
+        default: "Deploying to UAT"
+      prod_message:
+        required: false
+        type: string
+        default: "Deploying to Production"
 
 jobs:
   preparation:
@@ -17,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Preparation Setup
-        run: echo "Running preparation steps"
+        run: echo "${{ inputs.prep_message }}"
 
   parallel-stages:
     needs: preparation
@@ -27,8 +63,18 @@ jobs:
         job: ['build', 'unit-test', 'packaging', 'sca']
     steps:
       - uses: actions/checkout@v4
-      - name: ${{ matrix.job }}
-        run: echo "Running ${{ matrix.job }}"
+      - name: Build
+        if: matrix.job == 'build'
+        run: echo "${{ inputs.build_message }}"
+      - name: Unit Test
+        if: matrix.job == 'unit-test'
+        run: echo "${{ inputs.test_message }}"
+      - name: Packaging
+        if: matrix.job == 'packaging'
+        run: echo "${{ inputs.package_message }}"
+      - name: SCA
+        if: matrix.job == 'sca'
+        run: echo "${{ inputs.sca_message }}"
 
   sast:
     needs: parallel-stages
@@ -36,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: SAST Analysis
-        run: echo "Running SAST analysis"
+        run: echo "${{ inputs.sast_message }}"
 
   image-build:
     needs: sast
@@ -44,30 +90,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker Image
-        run: echo "Building application image"
-
-  deploy-sit:
-    needs: image-build
-    runs-on: ubuntu-latest
-    if: inputs.skip_sit == false
-    steps:
-      - name: Deploy to SIT
-        run: echo "Deploying to SIT environment"
-
-  e2e-test-sit:
-    needs: deploy-sit
-    runs-on: ubuntu-latest
-    if: inputs.skip_sit == false
-    steps:
-      - name: E2E Tests
-        run: echo "Running E2E tests in SIT"
+        run: echo "${{ inputs.image_message }}"
 
   deploy-uat:
-    needs: [image-build, e2e-test-sit]
-    if: always() && (needs.e2e-test-sit.result == 'success' || needs.e2e-test-sit.result == 'skipped')
+    needs: image-build
     runs-on: ubuntu-latest
     environment:
-      name: ${{ inputs.environment }}
+      name: UAT
     steps:
       - name: Deploy to UAT
-        run: echo "Deploying to UAT environment"
+        run: echo "${{ inputs.uat_message }}"
+
+  deploy-prod:
+    needs: deploy-uat
+    runs-on: ubuntu-latest
+    environment:
+      name: Production
+    steps:
+      - name: Deploy to Production
+        run: echo "${{ inputs.prod_message }}"
