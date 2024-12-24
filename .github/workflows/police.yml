@@ -3,8 +3,8 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
 jobs:
   preparation:
@@ -41,32 +41,26 @@ jobs:
       - name: Build Docker Image
         run: echo "Building application image"
 
-  deploy-sit:
-    needs: image-build
-    runs-on: ubuntu-latest
-    environment: SIT
-    steps:
-      - name: Deploy to SIT
-        run: echo "Deploying to SIT environment"
-
-  e2e-test-sit:
-    needs: deploy-sit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run E2E Tests
-        run: echo "Running E2E tests in SIT"
-
-  deploy-uat:
-    needs: e2e-test-sit
-    runs-on: ubuntu-latest
-    environment:
-      name: UAT
-      # Optional: Add URL if you want to link to your deployment
-      # url: ${{ steps.deploy.outputs.deployment-url }}
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Deploy to UAT
-        run: |
-          echo "Deploying to UAT environment"
-          # Add your UAT deployment steps here
+    deploy-sit:
+      needs: image-build
+      runs-on: ubuntu-latest
+      if: false  # This stage will be skipped but visible
+      steps:
+        - name: Deploy to SIT
+          run: echo "Deploying to SIT environment"
+  
+    e2e-test-sit:
+      needs: deploy-sit
+      runs-on: ubuntu-latest
+      if: false  # This stage will be skipped but visible
+      steps:
+        - name: Run E2E Tests
+          run: echo "Running E2E tests in SIT"
+  
+    deploy-uat:
+      needs: image-build  # Changed dependency to image-build to skip SIT stages
+      runs-on: ubuntu-latest
+      environment: UAT
+      steps:
+        - name: Deploy to UAT
+              run: echo "Deploying to UAT environment"
