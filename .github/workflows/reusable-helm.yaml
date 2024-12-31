@@ -1,0 +1,24 @@
+name: Reusable Action
+
+on:
+  workflow_call:
+    inputs:
+      value_file:
+        required: true
+        type: string
+      string_input:
+        required: true
+        type: string
+      template_folder:
+        required: true
+        type: string
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Process YAML
+        run: |
+          echo "Processing ${{ inputs.value_file }} with input ${{ inputs.string_input }} in folder ${{ inputs.template_folder }}"
