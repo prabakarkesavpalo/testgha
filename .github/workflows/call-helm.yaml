@@ -1,0 +1,15 @@
+name: Main Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  pipeline:
+    uses: ./.github/workflows/reusable-helm.yaml
+    with:
+      value_file: 'value.yaml'
+      string_input: "--set-string=abc --set-string=xyz"
+      template_folder: "/template"
