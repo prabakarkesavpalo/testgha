@@ -1,3 +1,30 @@
+# This GitHub Actions workflow defines a reusable pipeline with multiple stages.
+# 
+# Workflow Name: Reusable Pipeline
+# 
+# Triggers:
+# - workflow_call: This workflow is triggered when called by another workflow.
+# 
+# Inputs:
+# - environment (string, required): The target environment for the workflow.
+# - skip_sit (boolean, optional, default: false): Flag to skip SIT stage.
+# - prep_message (string, optional, default: "Running preparation"): Message for the preparation stage.
+# - build_message (string, optional, default: "Running build"): Message for the build stage.
+# - test_message (string, optional, default: "Running tests"): Message for the unit test stage.
+# - package_message (string, optional, default: "Running packaging"): Message for the packaging stage.
+# - sca_message (string, optional, default: "Running SCA"): Message for the SCA stage.
+# - sast_message (string, optional, default: "Running SAST"): Message for the SAST stage.
+# - image_message (string, optional, default: "Building image"): Message for the image build stage.
+# - uat_message (string, optional, default: "Deploying to UAT"): Message for the UAT deployment stage.
+# - prod_message (string, optional, default: "Deploying to Production"): Message for the Production deployment stage.
+# 
+# Jobs:
+# - preparation: Runs the preparation setup.
+# - parallel-stages: Runs build, unit-test, packaging, and SCA stages in parallel.
+# - sast: Runs the SAST analysis after parallel stages.
+# - image-build: Builds the Docker image after SAST analysis.
+# - deploy-uat: Deploys to UAT environment after image build.
+# - deploy-prod: Deploys to Production environment after UAT deployment.
 name: Reusable Pipeline
 
 on:

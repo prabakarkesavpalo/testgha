@@ -1,0 +1,12 @@
+
+name: Manual workflow call
+
+on:
+  workflow_call:
+
+
+jobs:
+  preparation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4

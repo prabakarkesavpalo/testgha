@@ -22,3 +22,6 @@ jobs:
       - name: Process YAML
         run: |
           echo "Processing ${{ inputs.value_file }} with input ${{ inputs.string_input }} in folder ${{ inputs.template_folder }}"
+          //add sum of 2 numbers
+          echo "sum: $(( ${{ inputs.string_input }} + ${{ inputs.string_input }} ))" >> ${{ inputs.value_file }}
+          
