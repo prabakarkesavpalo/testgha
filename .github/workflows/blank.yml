@@ -41,7 +41,7 @@ jobs:
 
 
   deploy:
-    runs-on: ${{ github.event.inputs.environment == "prod" && 'ubuntu-latest' || 'windows-latest' }}
+    runs-on: ${{ github.event.inputs.environment == 'prod' && 'ubuntu-latest' || 'windows-latest' }}
     #needs: [ build ]
     steps:
         - name: Check Ubuntu Version
