@@ -6,6 +6,7 @@ on:
 
 jobs:
   preparation:
+    name: test manual wfc
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
